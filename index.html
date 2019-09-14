@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<!-- (C) Copyright 2019, Oliver Lenehan -->
+		<link rel="stylesheet" href="./main.css">
+		<script src="main.js"></script>
+        <title>GridDraw v2.0</title>
+    </head>
+    <body>
+		<div id="topBar">GridDraw v2.0</div><!--
+		--><div id="leftBar">
+			<button class="bUndo" onclick="d.history.undo()">Undo (U)</button><br>
+			<button class="bClear" onclick="confirm('Do you want to clear all?\nThis will permanently delete your work.')?d.history.flush():0">Clear</button><br>
+			<button class="bImport" onclick="(async()=>{d.history.import(prompt('Input GridDraw format:'))})()">Import</button><br>
+			<button class="bExport" onclick="(async()=>{prompt('Copy output to a file:',d.history.export())})()">Export</button>
+			<hr>
+			<p>Delete (D)<br><br>Cancel (C)</p>
+			<!--<label>Columns</label><br>
+			<input type="text"><br>
+			<label>Rows</label><br>
+			<input type="text"><br>-->
+		</div><!--
+		--><svg onload="GridDraw(this)" data-xy="5 5"></svg><!--
+	--></body>
+</html>
