@@ -1,16 +1,16 @@
 /*
-	(C) Copyright 2019, Oliver Lenehan
+  (C) Copyright 2019, Oliver Lenehan
 
-	TODO:
-	 + css/js var integration
-	 + resize grid live (from corner or centre)
+  TODO:
+   + css/js var integration
+   + resize grid live (from corner or centre)
 */
 
 /// <reference lib="dom"/>
 
 type lineTypes = "grid" | "brushed" | "brushing" 
 
-interface DrawningProperties {
+interface DrawingProperties {
 	root: SVGSVGElement
 	scale: number
 	width: number
@@ -40,9 +40,10 @@ function round(n: number, step: number){
     return step * Math.ceil((n + (step**2)) / step - 1)
 }
 
+/** A coordinate system that can scale from the dom, viewbox or local grid system */
 class Coords {
 	viewbox: Viewbox
-	constructor( private d: DrawningProperties ){
+	constructor( private d: DrawingProperties ){
 		this.viewbox = {
 			"minX": -this.d.scale, "minY": -this.d.scale,
 			"width": (this.d.width + 2) * this.d.scale , "height": (this.d.height + 2) * this.d.scale,
@@ -61,12 +62,9 @@ class Coords {
 			"y": round(p.y / this.d.scale, step)
 		} as Point)
 	}}
-	fromOffset( p: Point ){return{
-
-	}}
 }
 
-
+/** A line that holds the svg element and local grid coords */
 class Line {
 	element: SVGLineElement = document.createElementNS("http://www.w3.org/2000/svg", "line")
 	constructor( public lineType: lineTypes, public pointA: Point, public pointB: Point ){}
@@ -137,6 +135,7 @@ class Paintbrush {
 	}
 }
 
+//
 class BrushHistory {
 	list: Line[] = []
 	constructor( private coords: Coords, private root: Element ){}
@@ -184,7 +183,7 @@ class Drawing {
 	cursor: Cursor
 	paintbrush: Paintbrush
 	selectedLine: Line
-	constructor( d: DrawningProperties ){
+	constructor( d: DrawingProperties ){
 
 		// init/assign members
 		this.root = d.root
@@ -195,72 +194,79 @@ class Drawing {
 		// init svg root properties
 		this.root.setAttribute("class", "GridDraw")
 		this.root.setAttribute("viewBox", this.coords.viewbox.toString())
+		// establish as the captured input element using tab-index=0
+		this.root.tabIndex = 0
 		
-		// Draw Grid
-        for (let y = 0; y < d.width+1; y++) {
-			let l = new Line("grid", {x:0, y:y}, {x:d.width, y:y})
-			l.update(this.coords)
-			this.layers.grid.appendChild(l.element)
-		}
-		for (let x = 0; x < d.height+1; x++) {
-			let l = new Line("grid", {x:x, y:0}, {x:x, y:d.height})
-			l.update(this.coords)
-			this.layers.grid.appendChild(l.element)
-		}
+		// draw the grid
+		this.initGrid(d)
 
-		// Add Cursor
+		// Add cursor
 		this.cursor = new Cursor()
 		this.layers.cursor.appendChild(this.cursor.element)
 
 		// Add paintbrush
 		this.paintbrush = new Paintbrush(this.coords)
+		
+		// set the drawing to capture keyboard events
+		window.setTimeout(()=>{this.root.focus()},0)
 
-		// User input handlers
+		// event handlers
+
+		// when the mouse goes down
 		this.root.onmousedown = e => {
+			// begin painting
 			this.paintbrush.begin(this.cursor.point)
+			// add painting line to history
 			this.history.add(this.paintbrush.line)
 		}
 
+		// when the mouse goes up
 		this.root.onmouseup = e => {
+			// finish painting
 			this.paintbrush.end(this.cursor.point)
 		}
 
+		// when the mouse moves
 		this.root.onmousemove = e => {
+			// set the position of the cursor from the mouse position
 			this.cursor.point = this.coords.fromViewbox({
 				x: (e.offsetX - this.root.getCTM().e) / this.root.getCTM().a,
 				y : (e.offsetY - this.root.getCTM().f) / this.root.getCTM().d
 			}).toGrid()
+			// update the position of the cursor in the svg element
 			this.cursor.update(this.coords)
+			// update the position of the brush line in the svg element
 			this.paintbrush.update(this.cursor.point)
 
-			// Get currently hovered line
+			// Get the currently hovered line
 			this.selectedLine = null
 			for (let b of this.history.list){
 				if (b.element.matches(":hover")){
 					this.selectedLine = b
 				}
 			}
+			// set the drawing to capture keyboard events
 			window.setTimeout(()=>{this.root.focus()},0)
 		}
 
+		// when the keyboard is pressed
 		this.root.onkeydown = e => {
-			// cancel brushing
+			// cancel current brushing
 			if (["Escape", "c", "C"].includes(e.key)){
+				// remove from history
 				this.history.remove(this.paintbrush.line)
+				// cancel the brush
 				this.paintbrush.cancel()
 			}
-			// undo brush
+			// undo previous brush
 			else if (["u", "U"].includes(e.key)){
 				this.history.undo()
 			}
-			// delete brush
+			// delete hovered brush
 			else if (["d", "D"].includes(e.key)){
 				this.history.remove(this.selectedLine)
 			}
 		}
-		// establish as the input element using tab-index=0
-		this.root.tabIndex = 0
-		this.root.focus()
 	}
 	private initLayers(){
 		// add groups for each z-level of brushes
@@ -272,6 +278,18 @@ class Drawing {
 		this.root.appendChild(this.layers.grid)
 		this.root.appendChild(this.layers.brush)
 		this.root.appendChild(this.layers.cursor)
+	}
+	private initGrid( d: DrawingProperties ){
+        for (let y = 0; y < d.width+1; y++) {
+			let l = new Line("grid", {x:0, y:y}, {x:d.width, y:y})
+			l.update(this.coords)
+			this.layers.grid.appendChild(l.element)
+		}
+		for (let x = 0; x < d.height+1; x++) {
+			let l = new Line("grid", {x:x, y:0}, {x:x, y:d.height})
+			l.update(this.coords)
+			this.layers.grid.appendChild(l.element)
+		}
 	}
 }
 
