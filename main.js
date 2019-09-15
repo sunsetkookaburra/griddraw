@@ -1,4 +1,10 @@
-/// <reference lib="dom"/>
+/*
+    (C) Copyright 2019, Oliver Lenehan
+
+    TODO:
+     + css/js var integration
+     + resize grid live (from corner or centre)
+*/
 function round(n, step) {
     return step * Math.ceil((n + (step ** 2)) / step - 1);
 }
@@ -206,6 +212,7 @@ class Drawing {
         this.root.onkeydown = e => {
             // cancel brushing
             if (["Escape", "c", "C"].includes(e.key)) {
+                this.history.remove(this.paintbrush.line);
                 this.paintbrush.cancel();
             }
             // undo brush

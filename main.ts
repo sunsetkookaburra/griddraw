@@ -246,6 +246,7 @@ class Drawing {
 		this.root.onkeydown = e => {
 			// cancel brushing
 			if (["Escape", "c", "C"].includes(e.key)){
+				this.history.remove(this.paintbrush.line)
 				this.paintbrush.cancel()
 			}
 			// undo brush
