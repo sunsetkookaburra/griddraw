@@ -1,0 +1,70 @@
+/*
+    Grid Draw v1.0 (C) 2018 Oliver Lenehan
+*/
+
+body {
+    margin: 0;
+    background-color: #777;
+}
+canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+canvas:hover {
+    cursor: pointer;
+}
+header {
+    margin-bottom: 30px;
+    background-color: #333;
+    padding: 20px;
+    font-size: 0;
+    text-align: center;
+}
+footer {
+    padding: 30px;
+    background-color: #333;
+    color: #DDD;
+    font-family: monospace;
+    font-size: 20px;
+}
+#canvases {
+    margin: auto;
+    margin-bottom: 30px;
+    position: relative;
+    background-color: #EEE;
+}
+#bannerimg {
+    margin: auto;
+    display: inline-block;
+    height: 180px;
+}
+#bannerver {
+    margin: auto;
+    display: inline-block;
+    height: 180px;
+}
+#buttons {
+    text-align: center;
+    font-size: 0;
+}
+.save {
+    margin: 0 20px 30px 20px;
+    color: black;
+    text-decoration: none;
+    font-size: 35px;
+    padding: 30px;
+    background-color: #CCC;
+    font-family: 'Segoe UI', sans-serif;
+    width: 300px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 20px;
+}
+.save:hover {
+    background-color: #999;
+}
+
+#sizing {
+	text-align: center;
+}

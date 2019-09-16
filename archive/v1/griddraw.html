@@ -1,0 +1,40 @@
+<!-- Grid Draw v1.0 (C) 2018 Oliver Lenehan -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grid Draw v1.0</title>
+    <link rel="icon" type="image/png" href="gd.png" />
+    <link href="griddraw.css" rel="stylesheet"/>
+    <script src="griddraw.js" async></script>
+</head>
+<body>
+    <header>
+        <img id="bannerimg" src="griddraw.png" />
+        <img id="bannerver" src="v1p0.png" />
+    </header>
+    <div id="canvases">
+        <canvas id="photoLayer" width="793" height="793" hidden></canvas>
+        <canvas id="gridLayer" width="793" height="793"></canvas>
+        <canvas id="paperLayer" width="793" height="793"></canvas>
+        <canvas id="previewLayer" width="793" height="793"></canvas>
+        <canvas id="cursorLayer" width="793" height="793"></canvas>
+    </div>
+    <div id="buttons">
+        <a id="save" class="save" href="" download="drawing.png">💾 Save</a>
+        <a id="saveGrid" class="save" href="" download="drawing.png">💾 Save with Grid</a>
+    </div>
+	<!--<div id="sizing">
+		<label for="scaleText">Grid Zoom</label>
+		<input id="scaleText" type="number" oninput="updateApp();"/><br/>
+		<label for="gridXYText">Grid Width</label>
+		<input id="gridXYText" type="text" type="number" oninput="updateApp();"/><br/>
+		<label for="gridThicknessText">Grid Thickness</label>
+		<input id="gridThicknessText" type="text" type="number" oninput="updateApp();"/><br/>
+		<label for="lineWidthText">Line Thickness</label>
+		<input id="lineWidthText" type="text" type="number" oninput="updateApp();"/><br/>
+	</div><br/>-->
+    <!--<footer>
+        <em>(C) 2018 Oliver Lenehan</em>
+    </footer>-->
+</body>
+<html>
