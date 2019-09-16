@@ -1,0 +1,191 @@
+/*
+	(C) Copyright 2019, Oliver Lenehan
+
+	Google Material Icons
+	- License: http://www.apache.org/licenses/LICENSE-2.0.txt
+	- Link: https://material.io/resources/icons
+*/
+
+:root {
+	box-sizing: border-box;
+	--colourMain: rgb(20, 20, 20);
+	--colourMainFont: rgb(240, 240, 240);
+	--scaleMain: 1;
+	--heightTopBar: calc(60px * var(--scaleMain));
+	--widthLeftBar: calc(80px * var(--scaleMain));
+	--heightLeftBar: calc(100% - var(--heightTopBar));
+	--widthCanvases: calc(100% - var(--widthLeftBar));
+	--heightCanvases: var(--heightLeftBar);
+	--propertyBgColour: white;
+
+	--GD-BrushLineWidth: 18;
+	--GD-BrushLineColour: #222222;
+	--GD-BrushLineHoverColour: #26b3d6;
+	--GD-DrawLineColour: #003f7a;
+	--GD-GridLineWidth: 5;
+	--GD-GridLineColour: #87cefa;
+	--GD-CursorRadius: 10;
+}
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+html {
+	height: 100%;
+}
+body {
+	position: relative;
+	margin: 0;
+	min-height: 100%;
+	height: 100%;
+	background-color: #000000;
+}
+
+/* Drawing */
+
+.GridDraw {
+	/*width: 100%;*/
+	height: calc(100% - 65px);
+	background-color: var(--propertyBgColour);
+}
+.GridDraw:hover {
+	cursor: pointer;
+}
+.GridDraw-GridLine {
+	stroke-width: var(--GD-GridLineWidth);
+	stroke: var(--GD-GridLineColour);
+	/*pointer-events: none;*/
+	stroke-linecap: square;
+	shape-rendering: optimizeSpeed;
+	/*vector-effect: non-scaling-stroke;*/
+}
+.GridDraw-BrushLine {
+	stroke-width: var(--GD-BrushLineWidth);
+	stroke: var(--GD-BrushLineColour);
+	/*pointer-events: none;*/
+	stroke-linecap: round;
+	shape-rendering: geometricPrecision;
+}
+.GridDraw-BrushLine:hover {
+	stroke-width: var(--GD-BrushLineWidth);
+	stroke: var(--GD-BrushLineHoverColour);
+	/*pointer-events: none;*/
+	stroke-linecap: round;
+	shape-rendering: geometricPrecision;
+}
+.GridDraw-DrawLine {
+	stroke-width: var(--GD-BrushLineWidth);
+	stroke: var(--GD-DrawLineColour);
+	/*pointer-events: none;*/
+	stroke-linecap: round;
+	shape-rendering: geometricPrecision;
+}
+.GridDraw-Cursor {
+	stroke-width: var(--GD-CursorRadius);
+	stroke: royalblue;
+	fill: royalblue;
+	pointer-events: none;
+}
+
+/* Misc */
+
+#topBar {
+	position: relative;
+	z-index: 2;
+	height: var(--heightTopBar);
+	padding: 10px;
+	background-color: var(--colourMain);
+	box-shadow: 0px 0px 31px 0px rgba(0,0,0,1);
+	color: var(--colourMainFont);
+	text-align: center;
+	font-family: sans-serif;
+	font-size: calc(37px * var(--scaleMain));
+}
+
+#leftBar {
+	z-index: 1;
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	vertical-align: top;
+	height: var(--heightLeftBar);
+	width: var(--widthLeftBar);
+	/*padding: 10px;*/
+	background-color: var(--colourMain);
+	box-shadow: 0px 0px 31px 0px rgba(0,0,0,1);
+	color: var(--colourMainFont);
+	text-align: center;
+	font-family: sans-serif;
+	font-size: calc(20px * var(--scaleMain));
+}
+
+#leftBar > button {
+	width: var(--widthLeftBar);
+	height: var(--widthLeftBar);
+	padding-top: calc(var(--widthLeftBar) - 35px);
+	border: none;
+	outline: none;
+	background-color: transparent;
+	background-size: 40%;
+	background-repeat: no-repeat;
+	background-position: 50% 25%;
+	color: white;
+}
+#leftBar > button:hover {
+	cursor: pointer;
+	background-color: rgba(255,255,255,0.2);
+}
+#leftBar > .bUndo {
+	background-image: url("./img/undo.png");
+}
+#leftBar > .bClear {
+	background-image: url("./img/delete.png");
+}
+#leftBar > .bImport {
+	background-image: url("./img/file.png");
+}
+#leftBar > .bExport {
+	background-image: url("./img/copy.png");
+}
+#leftBar > p {
+	font-size: 14px;
+}
+
+svg {
+	display: block;
+	width: 100%;
+}
+@media (max-width: 1000px) {
+	svg {
+		display: inline-block;
+		width: var(--widthCanvases);
+		margin-left: var(--widthLeftBar);
+	}
+}
+
+/*
+#canvasGroup {
+	display: inline-block;
+	position: relative;
+	vertical-align: top;
+}
+#canvasGroup.draw:hover {
+	cursor: default;
+}
+#canvasGroup.draw:active {
+	cursor: pointer;
+}
+#canvasGroup.move:hover {
+	cursor: grab;
+}
+#canvasGroup.move:active {
+	cursor: grabbing;
+}
+
+#canvasGroup > canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}*/
